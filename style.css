@@ -1,0 +1,615 @@
+/* ==========================================================================
+   ST-Inkwell — общие стили. Используем переменные темы SillyTavern
+   (--SmartTheme*), чтобы окно всегда совпадало с выбранной темой юзера.
+   ========================================================================== */
+
+#stt-drawer-icon {
+    cursor: pointer;
+}
+
+.stt-window {
+    position: fixed;
+    top: 8%;
+    left: 50%;
+    margin-left: -360px; /* половина базовой ширины (720px), центрирует при открытии */
+    width: min(720px, 92vw);
+    height: 560px;
+    max-height: 82vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--SmartThemeBlurTintColor, #1e1e28);
+    color: var(--SmartThemeBodyColor, #e0e0e0);
+    border: 1px solid var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.15));
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    z-index: 9998;
+    backdrop-filter: blur(var(--SmartThemeBlurStrength, 10px));
+    overflow: hidden;
+    box-sizing: border-box;
+
+    /* Ресайз на ПК: тянем за правый нижний угол. margin-left вместо
+       transform-центрирования — иначе окно "прыгает" при каждом кадре ресайза. */
+    resize: both;
+    min-width: 380px;
+    min-height: 320px;
+    max-width: 95vw;
+}
+
+.stt-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: rgba(0, 0, 0, 0.18);
+    border-bottom: 1px solid var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.1));
+    cursor: move;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.stt-title {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.9;
+}
+
+.stt-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.stt-header-actions i {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.15s ease;
+}
+
+.stt-header-actions i:hover {
+    opacity: 1;
+}
+
+.stt-tabs {
+    display: flex;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.1));
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.stt-tab {
+    flex: 1;
+    padding: 9px 8px;
+    background: none;
+    border: none;
+    color: var(--SmartThemeBodyColor, #e0e0e0);
+    opacity: 0.6;
+    cursor: pointer;
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-bottom: 2px solid transparent;
+    transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.stt-tab:hover {
+    opacity: 0.85;
+}
+
+.stt-tab.active {
+    opacity: 1;
+    border-bottom-color: var(--SmartThemeQuoteColor, #8faadc);
+}
+
+.stt-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px;
+    min-height: 0; /* критично для flex-column + overflow при ресайзе */
+}
+
+.stt-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stt-icon-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    opacity: 0.7;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.stt-icon-btn:hover {
+    opacity: 1;
+}
+
+/* ——— Плавающие простые модалки (результат экстрактора и т.п.) ——— */
+
+.stt-simple-modal {
+    position: fixed;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(560px, 90vw);
+    max-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--SmartThemeBlurTintColor, #1e1e28);
+    color: var(--SmartThemeBodyColor, #e0e0e0);
+    border: 1px solid var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.15));
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    z-index: 10001;
+    backdrop-filter: blur(var(--SmartThemeBlurStrength, 10px));
+    overflow: hidden;
+}
+
+.stt-simple-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: rgba(0, 0, 0, 0.18);
+    border-bottom: 1px solid var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.1));
+    cursor: move;
+    font-weight: 600;
+}
+
+.stt-simple-body {
+    padding: 12px 14px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.stt-simple-footer {
+    display: flex;
+    gap: 8px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.1));
+    flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Папки лорбуков (lf-)
+   ========================================================================== */
+
+.lf-panel-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 4px;
+}
+
+.lf-controls-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.lf-controls-row input[type="text"] {
+    flex: 1;
+}
+
+.lf-controls-row i {
+    cursor: pointer;
+    opacity: 0.6;
+    padding: 4px;
+}
+
+.lf-controls-row i:hover,
+.lf-controls-row i.lf-active {
+    opacity: 1;
+    color: var(--SmartThemeQuoteColor, #8faadc);
+}
+
+.lf-empty {
+    opacity: 0.55;
+    text-align: center;
+    padding: 24px 12px;
+}
+
+.lf-folder-item {
+    border: 1px solid var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.08));
+    border-radius: 8px;
+    margin-bottom: 6px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.lf-folder-item.lf-drag-over {
+    border-color: var(--SmartThemeQuoteColor, #8faadc);
+    background: rgba(143, 170, 220, 0.08);
+}
+
+.lf-folder-item.lf-bound {
+    border-left: 3px solid var(--SmartThemeQuoteColor, #8faadc);
+}
+
+.lf-folder-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    cursor: pointer;
+}
+
+.lf-folder-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.lf-folder-actions {
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.lf-folder-header:hover .lf-folder-actions {
+    opacity: 0.75;
+}
+
+.lf-folder-actions i {
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.lf-folder-actions i:hover,
+.lf-folder-actions i.lf-active {
+    color: var(--SmartThemeQuoteColor, #8faadc);
+}
+
+.lf-folder-contents {
+    padding: 4px 10px 10px 26px;
+}
+
+.lf-subfolders-list {
+    margin-left: 6px;
+    border-left: 1px dashed var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.1));
+    padding-left: 8px;
+}
+
+.lf-section-label {
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.5;
+    margin: 8px 0 4px;
+}
+
+.lf-chats-toggle {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+}
+
+.lf-no-books {
+    opacity: 0.4;
+    font-size: 0.85em;
+    padding: 4px 0;
+}
+
+.lf-book-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+    border-radius: 5px;
+    cursor: grab;
+}
+
+.lf-book-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.lf-book-name {
+    flex: 1;
+}
+
+.lf-book-remove {
+    opacity: 0;
+    cursor: pointer;
+    font-size: 0.85em;
+}
+
+.lf-book-item:hover .lf-book-remove {
+    opacity: 0.6;
+}
+
+.lf-book-remove:hover {
+    opacity: 1 !important;
+    color: #e06c75;
+}
+
+.lf-char-group {
+    margin-bottom: 2px;
+}
+
+.lf-char-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 0;
+    cursor: pointer;
+    font-size: 0.85em;
+    opacity: 0.8;
+}
+
+.lf-char-chats {
+    padding-left: 16px;
+}
+
+.lf-chat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 0;
+    font-size: 0.8em;
+    opacity: 0.75;
+}
+
+.lf-chat-item i {
+    cursor: pointer;
+}
+
+.lf-chat-item i.lf-active,
+.lf-chat-item i:hover {
+    color: var(--SmartThemeQuoteColor, #8faadc);
+}
+
+.lf-inline-input-wrapper,
+.lf-inline-add {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 4px 0;
+}
+
+.lf-inline-input-wrapper input,
+.lf-inline-add select {
+    flex: 1;
+}
+
+.lf-inline-input-wrapper i {
+    cursor: pointer;
+}
+
+.lf-compact .lf-folder-contents {
+    padding-bottom: 4px;
+}
+
+.lf-compact .lf-book-item,
+.lf-compact .lf-chat-item {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+/* ==========================================================================
+   Экстрактор лорбука (le-)
+   ========================================================================== */
+
+.le-select-row select {
+    width: 100%;
+}
+
+#le-entries-list {
+    height: 320px; /* Заменили max-height */
+    overflow-y: auto;
+    overscroll-behavior: contain; /* Запираем скролл */
+    border: 1px solid var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.08));
+    border-radius: 8px;
+    padding: 6px;
+}
+
+.le-hint,
+.le-error {
+    opacity: 0.55;
+    text-align: center;
+    padding: 16px;
+}
+
+.le-error {
+    color: #e06c75;
+    opacity: 0.9;
+}
+
+.le-entry-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.le-entry-item:last-child {
+    border-bottom: none;
+}
+
+.le-entry-item label {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.le-entry-title {
+    font-weight: 500;
+}
+
+.le-entry-preview {
+    font-size: 0.8em;
+    opacity: 0.55;
+}
+
+#le-entries-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+#le-result-text {
+    width: 100%;
+    min-height: 260px;
+    resize: vertical;
+    background: rgba(0, 0, 0, 0.2);
+    color: inherit;
+    border: 1px solid var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.1));
+    border-radius: 6px;
+    padding: 8px;
+    font-family: monospace;
+    font-size: 0.85em;
+}
+
+/* ==========================================================================
+   Экспорт чата (ce-)
+   ========================================================================== */
+
+.ce-settings-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    font-size: 0.85em;
+    opacity: 0.85;
+}
+
+.ce-settings-row label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+#ce-range-row,
+#ce-filter-row,
+#ce-search-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+#ce-range-row input[type="number"] {
+    width: 64px;
+}
+
+#ce-specific {
+    flex: 1;
+    min-width: 120px;
+}
+
+.ce-separator {
+    opacity: 0.5;
+    font-size: 0.85em;
+}
+
+#ce-search-row input {
+    flex: 1;
+}
+
+#ce-search-info {
+    font-size: 0.8em;
+    opacity: 0.6;
+    min-width: 60px;
+    text-align: right;
+}
+
+#ce-output-wrapper {
+    border: 1px solid var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.08));
+    border-radius: 8px;
+    padding: 8px;
+    height: 300px; /* Заменили max-height на явную высоту */
+    overflow-y: auto;
+    overscroll-behavior: contain; /* Запираем скролл внутри блока */
+    background: rgba(0, 0, 0, 0.15);
+}
+
+#ce-output-display {
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: monospace;
+    font-size: 0.85em;
+    min-height: 60px;
+}
+
+.ce-highlight {
+    background: rgba(255, 214, 92, 0.35);
+    border-radius: 2px;
+}
+
+.ce-highlight-active {
+    background: rgba(255, 214, 92, 0.75);
+}
+
+#ce-panel-footer {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   📱 ЖЕЛЕЗОБЕТОННЫЙ МОБИЛЬНЫЙ ФИКС
+   ========================================================================== */
+
+/* 1. Спасаем Flexbox от jQuery.
+   .show()/.hide() иногда подменяют inline display на "block" вместо "flex".
+   Этот селектор возвращает display: flex ВСЕГДА, КРОМЕ случаев, когда
+   скрипт прячет окно (display: none) — так окна не ломаются и закрываются. */
+.stt-window:not([style*="none"]),
+.stt-simple-modal:not([style*="none"]) {
+    display: flex !important;
+}
+
+/* 2. Жёсткие мобильные размеры для главного окна с вкладками */
+@media screen and (max-width: 768px) {
+    .stt-window {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        margin-left: 0 !important;
+        left: 0 !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        height: 100dvh !important; /* dvh обходит "прыгающую" адресную строку safari/chrome */
+        max-height: 100dvh !important;
+        border-radius: 0 !important;
+        resize: none !important; /* на тач-экранах угол ресайза только мешает */
+    }
+
+    .stt-tabs {
+        flex-wrap: wrap;
+    }
+
+    .stt-tab span {
+        display: none; /* на мобиле оставляем только иконки вкладок, экономим место */
+    }
+}
+
+/* ==========================================================================
+   📱 Фикс всплывающих поповеров (результат экстрактора и т.п.)
+   ========================================================================== */
+@media screen and (max-width: 1000px) {
+    .stt-simple-modal {
+        position: fixed !important;
+        left: 2vw !important;
+        width: 96vw !important;
+        max-width: 96vw !important;
+        margin-left: 0 !important;
+        /* отступаем сверху минимум на высоту шапки Таверны (60px) или 10% экрана */
+        top: max(60px, 10dvh) !important;
+        max-height: 85dvh !important;
+        box-sizing: border-box !important;
+        margin-top: 0 !important;
+        z-index: 10005 !important; /* поверх основного окна */
+    }
+}
+
+/* Броня от кастомных тем: принудительная подсветка активной вкладки */
+.stt-tab.active {
+    opacity: 1 !important;
+    border-bottom-color: var(--SmartThemeQuoteColor, #8faadc) !important;
+    background: var(--SmartThemeBlurTintColor, rgba(255, 255, 255, 0.08)) !important;
+}
