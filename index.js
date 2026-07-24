@@ -1,8 +1,10 @@
 import { registerTab, toggleWindow, openWindowToTab } from "./core/windowManager.js";
 import { t } from "./core/i18n.js";
+import { saveSettings } from "./core/settingsStore.js";
 import * as folders from "./modules/lorebook-folders/index.js";
 import * as exporter from "./modules/chat-exporter/index.js";
 import * as extractor from "./modules/lorebook-extractor/index.js";
+import * as chronicle from "./modules/chronicle/index.js";
 
 const EXTENSION_NAME = "ST-Inkwell";
 
@@ -51,12 +53,43 @@ function initPerMessageButton() {
     }
 }
 
+function initChronicleReset() {
+    $(document).on('click', '#st_toolkit_reset_presets_btn', async () => {
+        const confirmReset = confirm("Обновить встроенные пресеты? Это сбросит текущие настройки модуля chronicle и перезагрузит страницу.");
+        
+        if (confirmReset) {
+            const context = SillyTavern.getContext();
+            
+            if (context.extensionSettings && context.extensionSettings["ST-Toolkit"]) {
+                
+                // 1. Зачищаем старые пресеты
+                delete context.extensionSettings["ST-Toolkit"].chronicle;
+                
+                // 2. Вызываем сохранение (оно запустит таймер дебаунса ST)
+                saveSettings();
+                
+                // 3. Меняем вид кнопки, чтобы было понятно, что мы ждем записи
+                const $btn = $('#st_toolkit_reset_presets_btn');
+                $btn.html('<i class="fa-solid fa-hourglass-half fa-spin"></i> Сохраняем на диск...');
+                $btn.css('pointer-events', 'none'); // Блокируем повторные клики
+                
+                // 4. Ждем целых 3 секунды! Этого с запасом хватит, чтобы ST
+                // отправил запрос к API и физически перезаписал файл settings.json
+                setTimeout(() => {
+                    location.reload();
+                }, 3000); 
+            }
+        }
+    });
+}
+
 jQuery(async () => {
     console.log(`[${EXTENSION_NAME}] Loading...`);
     try {
         registerTab("folders", { titleKey: "tab.folders", icon: "fa-folder-tree", mount: folders.mount, onShow: folders.onShow });
         registerTab("extractor", { titleKey: "tab.extractor", icon: "fa-book-open", mount: extractor.mount, onShow: extractor.onShow });
         registerTab("exporter", { titleKey: "tab.exporter", icon: "fa-file-export", mount: exporter.mount, onShow: exporter.onShow });
+        registerTab("chronicle", { titleKey: "tab.chronicle", icon: "fa-scroll", mount: chronicle.mount, onShow: chronicle.onShow });
 
         // Автоактивация лорбуков при смене чата должна работать в фоне,
         // даже когда окно закрыто — запускаем её отдельно от монтирования вкладки.
@@ -64,6 +97,8 @@ jQuery(async () => {
 
         createTopBarIcon();
         initPerMessageButton();
+
+        initChronicleReset();
 
         console.log(`[${EXTENSION_NAME}] ✅ Loaded successfully`);
     } catch (error) {

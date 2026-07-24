@@ -15,3 +15,11 @@ export {
     event_types,
     getPastCharacterChats,
 } from "../../../../../script.js";
+
+// Те же классы chat_completion_source и список прокси, что использует
+// сама Таверна для отправки запросов к разным API — нужны, чтобы
+// собрать запрос под конкретный Connection Profile вручную.
+export {
+    proxies,
+    chat_completion_sources,
+} from "../../../../openai.js";
