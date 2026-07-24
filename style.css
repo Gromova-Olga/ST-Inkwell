@@ -593,6 +593,7 @@
     .stt-simple-modal {
         position: fixed !important;
         left: 2vw !important;
+        transform: none !important; /* <--- ДОБАВИТЬ ВОТ ЭТО! Убиваем смещение */
         width: 96vw !important;
         max-width: 96vw !important;
         margin-left: 0 !important;
@@ -604,14 +605,6 @@
         z-index: 10005 !important; /* поверх основного окна */
     }
 }
-
-/* Броня от кастомных тем: принудительная подсветка активной вкладки */
-.stt-tab.active {
-    opacity: 1 !important;
-    border-bottom-color: var(--SmartThemeQuoteColor, #8faadc) !important;
-    background: var(--SmartThemeBlurTintColor, rgba(255, 255, 255, 0.08)) !important;
-}
-
 /* ==========================================================================
    Хроники (chr-)
    ========================================================================== */
