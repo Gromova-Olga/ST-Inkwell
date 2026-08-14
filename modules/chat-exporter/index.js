@@ -147,7 +147,15 @@ function bindEvents(container) {
             const isUser = msg.is_user;
             const name = isUser ? (context.name1 || "User") : (msg.name || context.name2 || "Bot");
             const timestamp = msg.send_date || "";
-            const msgText = escapeHtml((msg.mes || "").trim()).replace(/\n/g, "<br>");
+            
+            // Магия: вырезаем теги comics перед компиляцией HTML
+            // Магия: универсальный пылесос перед компиляцией HTML
+            const rawText = (msg.mes || "")
+                .replace(/<(comics|image|picture|figure|gallery)[^>]*>[\s\S]*?<\/\1>\n*/gi, "")
+                .replace(/!\[[^\]]*\]\([^)]+\)\n*/g, "")
+                .replace(/<img[^>]*>\n*/gi, "")
+                .trim();
+            const msgText = escapeHtml(rawText).replace(/\n/g, "<br>");
 
             const metaParts = [];
             if (settings.includeNumbers) metaParts.push(`<span class="msg-num">#${idx + 1}</span>`);
