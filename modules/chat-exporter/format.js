@@ -26,8 +26,15 @@ export function formatMessages(messages, indices) {
         if (s.includeTimestamp && msg.send_date) parts.push(`(${msg.send_date})`);
 
         const header = parts.join(" ");
-        const text = (msg.mes || "").trim();
-
+        
+        // Магия: вырезаем теги comics перед форматированием текста
+        // Магия: универсальный пылесос перед форматированием текста
+        const text = (msg.mes || "")
+            .replace(/<(comics|image|picture|figure|gallery)[^>]*>[\s\S]*?<\/\1>\n*/gi, "")
+            .replace(/!\[[^\]]*\]\([^)]+\)\n*/g, "")
+            .replace(/<img[^>]*>\n*/gi, "")
+            .trim();
+            
         lines.push(header || null);
         lines.push(s.includePlainText ? `  ${text.replace(/\n/g, "\n  ")}` : text);
         lines.push("");
