@@ -370,7 +370,16 @@ function buildRangeMessages(container) {
     const to = Math.min(messages.length - 1, parseInt($(container).find("#chr-to").val(), 10) - 1);
     const result = [];
     for (let i = from; i <= to; i++) {
-        if (messages[i]) result.push({ role: messages[i].is_user ? "user" : "assistant", content: (messages[i].mes || "").trim() });
+        if (messages[i]) {
+            // Универсальный пылесос для визуального мусора
+            let cleanText = (messages[i].mes || "")
+                .replace(/<(comics|image|picture|figure|gallery)[^>]*>[\s\S]*?<\/\1>\n*/gi, "") // 1. Вырезаем кастомные блоки целиком
+                .replace(/!\[[^\]]*\]\([^)]+\)\n*/g, "") // 2. Вырезаем стандартные маркдаун-картинки
+                .replace(/<img[^>]*>\n*/gi, "") // 3. Вырезаем одинокие HTML-теги картинок
+                .trim();
+                
+            result.push({ role: messages[i].is_user ? "user" : "assistant", content: cleanText });
+        }
     }
     return result;
 }
